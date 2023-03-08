@@ -1,17 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { legacy_createStore as createStore } from "redux";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const add = document.querySelector("#add");
+const minus = document.querySelector("#minus");
+const span = document.querySelector("span");
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const reducer = (state = 0, action) => {
+  switch (action.type) {
+    case "ADD":
+      return (state += 1);
+    case "MINUS":
+      return (state -= 1);
+  }
+};
+const store = createStore(reducer);
+
+const onAddClick = () => {
+  store.dispatch({ type: "ADD" });
+  span.innerText = store.getState();
+};
+
+const onMinusClick = () => {
+  store.dispatch({ type: "MINUS" });
+  span.innerText = store.getState();
+};
+
+add.addEventListener("click", onAddClick);
+minus.addEventListener("click", onMinusClick);
+
+console.log(store);
